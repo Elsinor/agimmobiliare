@@ -1,0 +1,76 @@
+Data: 08/06/2016
+Tipologia: appartamento
+Metri quadri: 110
+Localita: Carini
+Prezzo vendita: 200000
+Range: 35.000
+Codice: X234B
+!!
+Tipologia: garage
+Metri quadri: 80
+Localita: Catania
+Prezzo vendita: 30000
+Range: 5000
+Codice: X5F2L3
+!!
+Tipologia: attico
+Metri quadri: 100
+Localita: Siracusa
+Prezzo vendita: 180000
+Range: 20.000
+Codice: D345
+!!
+Tipologia: appartamento
+Metri quadri: 300
+Localita: Bagheria
+Prezzo vendita: 300000
+Range: 50.000
+Codice: 54A21
+!!
+Tipologia: villetta
+Metri quadri: 230
+Localita: Mondello
+Prezzo vendita: 350000
+Range: 60.000
+Codice: 23G73
+xxxxx
+**DATI OFFERTE**
+Nome e Cognome: Guido Rossi
+Luogo Nascita: Palermo
+Codice Immobile: X234A
+Offerta: 170000
+&&
+Nome e Cognome: Marco Conti
+Luogo Nascita: Messina
+Codice Immobile: X234A
+Offerta: 180000
+&&
+Nome e Cognome: Maria Amato
+Luogo Nascita: Palermo
+Codice Immobile: X234A
+Offerta: 150000
+&&
+Nome e Cognome: Giulio Miceli
+Luogo Nascita: Palermo
+Codice Immobile: X5F2L3
+Offerta: 24000
+&&
+Nome e Cognome: Giovanna Scuderi
+Luogo Nascita: Bagheria
+Codice Immobile: D345
+Offerta: 140000
+&&
+Nome e Cognome: Susanna Greco
+Luogo di Nascita: Siracusa
+Codice Immobile: D345
+Offerta: 180000
+&&
+Nome e Cognome: Alfredo Russo
+Luogo Nascita: Ragusa
+Codice Immobile: 54A21
+Offerta: 260000
+&&
+Nome e Cognome: Letizia Gentile
+Luogo Nascita: Palermo
+Codice Immobile: D345
+Offerta: 170000

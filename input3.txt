@@ -1,0 +1,36 @@
+Data: 08/06/2016
+Tipologia: appartamento
+Metri quadri: 110
+Localita: Carini
+Prezzo vendita: 200000
+Range: 35.000
+Codice: X234A
+!!
+Tipologia: garage
+Metri quadri: 80
+Localita: Catania
+Prezzo vendita: 30000
+Range: 5000
+Codice: X5F2L3
+!!
+Tipologia: attico
+Metri quadri: 100
+Localita: Siracusa
+Prezzo vendita: 180000
+Range: 20.000
+Codice: D345
+!!
+Tipologia: appartamento
+Metri quadri: 300
+Localita: Bagheria
+Prezzo vendita: 300000
+Range: 50.000
+Codice: 54A21
+!!
+Tipologia: villetta
+Metri quadri: 230
+Localita: Mondello
+Prezzo vendita: 350000
+Range: 60.000
+Codice: 23G73
+xxxxx

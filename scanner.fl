@@ -1,0 +1,233 @@
+%{
+    #include "parser.tab.h"
+    #include <stdio.h>
+    #include <string.h>
+    #include "st.h"
+
+    int cleanInteger(char* str);
+    extern int lines;
+%}
+
+%option noyywrap
+
+
+main_date [0-9]{2}[/][0-9]{2}[/][0-9]{4}
+
+ad_type_value [a-z]+
+ad_mt_value [0-9]+
+ad_location_value [A-Z][a-z]*
+ad_price_value [0-9]*
+ad_minpricerange_value [0-9]*("."[0-9]*)?
+ad_id_value [A-Z0-9]*
+
+ad_sep "!!"
+
+main_sep [x]{5}
+
+offer_full_name_value [A-Z][a-z]*([ ][A-Z]*[a-z]*)*
+offer_location_value [A-Z][a-z]*
+offer_id_value [A-Z0-9]*
+offer_price_value [0-9]*("."[0-9]{3})*?
+
+offer_sep "&&"
+op_assign ":"
+num [0-9]+
+
+nl [\n]
+space [ \t]*
+
+%s AD_TYPE_CTX AD_MT_CTX AD_LOCATION_CTX AD_PRICE_CTX AD_RANGE_CTX AD_ID_CTX
+%s OFFER_FULLNAME_CTX OFFER_LOCATION_CTX OFFER_ID_CTX OFFER_PRICE_CTX
+%%
+"Data: " {
+  // printf("found Data:\n%s\n", yytext);
+  return DATE_DESC;
+}
+{main_date} {
+  // printf("found main_date:\n%s\n", yytext);
+  yylval.string=strdup(yytext);
+  return(DATE);
+}
+
+"Tipologia" {
+  BEGIN(AD_TYPE_CTX);
+  // printf("found Tipologia\n%s\n", yytext);
+  return AD_TYPE_DESC;
+}
+<AD_TYPE_CTX>{ad_type_value} {
+  BEGIN(0);
+  yylval.string=strdup(yytext);
+  return AD_TYPE_VALUE;
+}
+
+"Metri quadri" {
+  BEGIN(AD_MT_CTX);
+  // printf("found Metri quadri \n%s\n", yytext);
+  return AD_MT_DESC;
+}
+<AD_MT_CTX>{ad_mt_value} {
+  BEGIN(0);
+  // printf("found ad_mt_value:\n%s\n", yytext);
+  yylval.string=strdup(yytext);
+  return AD_MT_VALUE;
+}
+
+("Localita"|"Località") {
+  BEGIN(AD_LOCATION_CTX);
+  // printf("found Località \n%s\n", yytext);
+  return AD_LOCATION_DESC;
+}
+<AD_LOCATION_CTX>{ad_location_value} {
+  BEGIN(0);
+  // printf("found ad_location_value:\n%s\n", yytext);
+  yylval.string=strdup(yytext);
+  return AD_LOCATION_VALUE;
+}
+
+"Prezzo vendita" {
+  BEGIN(AD_PRICE_CTX);
+  // printf("found Prezzo \n%s\n", yytext);
+  return AD_PRICE_DESC;
+}
+<AD_PRICE_CTX>{ad_price_value}  {
+  BEGIN(0);
+  // printf("found ad_price_value:\n%s\n", yytext);
+  // yylval.string=strdup(yytext);
+  yylval.integer=cleanInteger(yytext);
+  return AD_PRICE_VALUE;
+}
+
+"Range" {
+  BEGIN(AD_RANGE_CTX);
+  // printf("found Range \n%s\n", yytext);
+  return AD_MINPRICERANGE_DESC;
+}
+<AD_RANGE_CTX>{ad_minpricerange_value}  {
+  BEGIN(0);
+  // printf("found ad_price_value:\n%s\n", yytext);
+  // yylval.string=strdup(yytext);
+  yylval.integer=cleanInteger(yytext);
+  return AD_MINPRICERANGE_VALUE;
+}
+
+"Codice" {
+  BEGIN(AD_ID_CTX);
+  // printf("found Codice \n%s\n", yytext);
+  return AD_ID_DESC;
+}
+<AD_ID_CTX>{ad_id_value}  {
+  BEGIN(0);
+  // printf("found ad_id_value: \n%s\n", yytext);
+  yylval.string=strdup(yytext);
+  return AD_ID_VALUE;
+}
+
+{ad_sep} {
+  // printf("found ad_sep: \n%s\n", yytext);
+  return AD_SEP;
+}
+
+{main_sep} {
+  // printf("found Main Sep: \n%s\n", yytext);
+  return MAIN_SEP;
+}
+"**DATI OFFERTE**" {
+  // printf("found Offer Header: \n%s\n", yytext);
+  return OFFER_HEADER;
+}
+
+"Nome e Cognome" {
+  BEGIN(OFFER_FULLNAME_CTX);
+  // printf("found offer_full_name_desc: \n%s\n", yytext);
+  return OFFER_FULL_NAME_DESC;
+}
+<OFFER_FULLNAME_CTX>{offer_full_name_value} {
+  BEGIN(0);
+  // printf("found offer_full_name_value:\n%s\n", yytext);
+  yylval.string=strdup(yytext);
+  return OFFER_FULL_NAME_VALUE;
+}
+
+("Luogo Nascita"|"Luogo di Nascita") {
+  BEGIN(OFFER_LOCATION_CTX);
+  // printf("found offer_location_desc: \n%s\n", yytext);
+  return OFFER_LOCATION_DESC;
+}
+<OFFER_LOCATION_CTX>{offer_location_value} {
+  BEGIN(0);
+  // printf("found offer_location_value:\n%s\n", yytext);
+  yylval.string=strdup(yytext);
+  return OFFER_LOCATION_VALUE;
+}
+
+"Codice Immobile" {
+  BEGIN(OFFER_ID_CTX);
+  // printf("found offer_id_desc: \n%s\n", yytext);
+  return OFFER_ID_DESC;
+}
+<OFFER_ID_CTX>{offer_id_value} {
+  BEGIN(0);
+  // printf("found offer_id_value:\n%s\n", yytext);
+  yylval.string=strdup(yytext);
+  return OFFER_ID_VALUE;
+}
+
+"Offerta" {
+  BEGIN(OFFER_PRICE_CTX);
+  // printf("found offer_price_desc: \n%s\n", yytext);
+  return OFFER_PRICE_DESC;
+}
+<OFFER_PRICE_CTX>{offer_price_value} {
+  BEGIN(0);
+  yylval.integer=cleanInteger(yytext);
+  return OFFER_PRICE_VALUE;
+}
+
+
+
+{offer_sep} {
+  // printf("found offer_sep:\n%s\n", yytext);
+  return OFFER_SEP;
+}
+
+
+{nl} {
+  // printf("found nl:\n%s\n", yytext);
+  return(NL);
+}
+{op_assign} {
+  // printf("found op_assign:\n%s\n", yytext);
+  return(OP_ASSIGN);
+}
+{space} {
+  // printf("found space:\n%s\n", yytext);
+  return SPACE;
+}
+
+%%
+int cleanInteger(char* str) {
+  int i, j;
+  const char toRemove = '.';
+  int len = strlen(str);
+  char* cp = strdup(str);
+  for(i=0; i<len; i++)
+  {
+      /*
+       * If the character to remove is found then shift all characters to one
+       * place left and decrement the length of string by 1.
+       */
+    if(cp[i] == toRemove)
+    {
+      for(j=i; j<len; j++)
+      {
+          cp[j] = cp[j+1];
+      }
+
+      len--;
+
+      // If a character is removed then make sure i doesn't increments
+      i--;
+    }
+  }
+  return atoi(cp);
+}
